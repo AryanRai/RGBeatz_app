@@ -352,16 +352,19 @@ async def color_to_blynk():
     
     async with aiohttp.ClientSession() as session:
             
-            url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "0" + '?value=' + str(r)
-            async with session.get(url) as resp:
-                x = 0
-            url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "1" + '?value=' + str(g)
-            async with session.get(url) as resp:
-                x = 0
-            url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "2" + '?value=' + str(b)
-            async with session.get(url) as resp:
-                x = 0
-                
+            #url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "0" + '?value=' + str(r)
+            #async with session.get(url) as resp:
+                #x = 0
+            #url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "1" + '?value=' + str(g)
+            #async with session.get(url) as resp:
+                #x = 0
+            #url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + "2" + '?value=' + str(b)
+            #async with session.get(url) as resp:
+                #x = 0
+            eel.beatz_set_val_individual("R", r)
+            eel.beatz_set_val_individual("G", g)
+            eel.beatz_set_val_individual("B", b)
+            
 
 async def data_to_blynk():
     global blynk_pin_data
@@ -376,9 +379,10 @@ async def data_to_blynk():
     
     
     async with aiohttp.ClientSession() as session:
-            url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + str(pin) + '?value=' + str(blynk_pin_data)
-            async with session.get(url) as resp:
-                x = 0
+            #url = 'http://blynk-cloud.com/' + blynk_token[default_device] + '/update/V' + str(pin) + '?value=' + str(blynk_pin_data)
+            #async with session.get(url) as resp:
+                #x = 0
+            eel.beatz_set_val_individual(str(), blynk_pin_data)
            
     
 def refresh_access_token():
@@ -469,7 +473,7 @@ def spotify_main():
         if (current_track_uri != prev_track_uri):
             print("song switched! mehnat starts")
             print(current_track_uri)
-            pin = 3
+            pin = "lol"
             blynk_pin_data = 1023
             loop = asyncio.get_event_loop()
             loop.run_until_complete(data_to_blynk())
@@ -539,12 +543,14 @@ def spotify_main():
                     #print(sync)
                 if (sync == True):
                     bar_percentage = ((current_loudness_positive/max_loudness_positive) * 100)* current_confidence
+                    
                     print (("#" * round(bar_percentage)))
+                    eel.setdatafromspotifyalways(bar_percentage, current_track_playing_status, current_track_progress, r, g, b)
                     blynk_pin_data = round((bar_percentage/100) * numb_leds)
                     r = 0
                     g = 125
                     b = 125
-                    pin = 4
+                    pin = "bot"
                     loop = asyncio.get_event_loop()
                     loop.run_until_complete(data_to_blynk())
 

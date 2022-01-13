@@ -220,6 +220,7 @@
     var client_secret = atob("MmRiNDFmMmVlNDljNDlhZjg0ZDAxOGRjMWI3NDRlMTc=");
     var devices_firebase_token;
     var devices_firebase_token_raw;
+    const dbRef = firebase.database().ref();
 
 
       function google_login() {
@@ -267,7 +268,18 @@
       var default_device;
       var currently_active_token;
       var rgb_wait = 0;
-
+      var bar_percentage = 0;
+      var current_track_playing_status = 0;
+      var current_track_progress = 0;
+        
+        //update only when changed at start
+      var current_track_name = "";
+      var current_track_artist = "";
+      var current_track_album = "";
+      var current_track_album_art = "";
+      var current_track_duration = 0;
+      var current_track_id = "";
+      var current_track_uri = "";
 
       eel.user_creds_main_send();
 
@@ -283,12 +295,43 @@
           }
 
 
+
+
+
+      eel.expose(setdatafromspotifyalways);
+        function setdatafromspotifyalways(bar_percentage_py, current_track_playing_status_py, current_track_progress_py, r, g, b) {
+          bar_percentage = bar_percentage_py;
+          current_track_playing_status = current_track_playing_status_py;
+          current_track_progress = current_track_progress_py;
+          console.log("bar_percentage", bar_percentage);
+          console.log("current_track_playing_status", current_track_playing_status);
+          console.log("current_track_progress", current_track_progress);	
+          console.log("r", r);
+          console.log("g", g);
+          console.log("b", b);
+          
+      }
+      eel.expose(blynk_update_val);
+          async function beatz_set_val_individual(key, val) {
+            
+          dbRef.child("users").child(google_uid).child("devices").child(currently_active_token).child("data").child(key).set(parseInt(val));
+
+          console.log(key, val);
+          rgb_wait = 1;
+          setTimeout(function() { rgb_wait = 0; }, (rgb_wait * 100));
+
+          }
+
       eel.expose(blynk_update_val);
           async function blynk_update_val(){
             
             r = parseInt(document.getElementById("slider__tooltip_r").textContent);
             g = parseInt(document.getElementById("slider__tooltip_g").textContent);
             b = parseInt(document.getElementById("slider__tooltip_b").textContent);
+            dbRef.child("users").child(google_uid).child("devices").child(currently_active_token).child("data").child("R").set((r/100) * 255);
+            dbRef.child("users").child(google_uid).child("devices").child(currently_active_token).child("data").child("G").set((g/100) * 255);
+            dbRef.child("users").child(google_uid).child("devices").child(currently_active_token).child("data").child("B").set((b/100) * 255);
+            /*
             jQuery.ajax({
               url : 'http://blynk-cloud.com/' + currently_active_token + '/update/V0?value=' + ((r/100) * 255).toString(),
               type: 'GET',
@@ -316,8 +359,11 @@
                 
                 
                  }
+                 
 
                });
+            */
+              
               console.log(r, g, b);
               rgb_wait = 1;
               setTimeout(function() { rgb_wait = 0; }, (rgb_wait * 100));
