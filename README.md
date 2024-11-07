@@ -2,7 +2,10 @@
 -Apps for https://github.com/AryanRai/RGBeatz
 
 # Python App
+Used to look like this back in the day
+![image](https://github.com/user-attachments/assets/939bff89-98f9-4e88-873a-e6be029ba4c9)
 
+Sorry about the background
 ![Screenshot 2024-11-07 204919](https://github.com/user-attachments/assets/5e5a9725-db35-4b9e-8b90-ee8e37a81dd3)
 ![Screenshot 2024-11-07 205011](https://github.com/user-attachments/assets/73aa390c-657a-4a1f-801b-1ec9f046daa8)
 ![Screenshot 2024-11-07 205019](https://github.com/user-attachments/assets/d6873535-25bb-4dd9-b228-8751d69db254)
